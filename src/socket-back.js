@@ -1,26 +1,12 @@
+import { addDocument, deleteDocument, findDocument, getDocuments, updateDocument } from "./documentsDb.js";
 import io from "./server.js";
-
-const documents = [
-  {
-    name: 'JavaScript',
-    text:'texto de javascript...'
-  },
-  {
-    nome: 'Node',
-    text:'texto de node...'
-  },
-  {
-    nome: 'Socket.IO',
-    text:'texto de socket.io...'
-  }
-]
 
 io.on("connection", (socket) => {
 
-  socket.on('select_document', (documentName, returnText) => {
+  socket.on('select_document', async(documentName, returnText) => {
     socket.join(documentName); //take the client that is connected to this socket and put it in a room with the name of the document.
 
-    const document = findDocument(documentName);
+    const document = await findDocument(documentName);
 
     if(document){
       returnText(document.text);
@@ -28,12 +14,40 @@ io.on("connection", (socket) => {
 
   });
   
-  socket.on('text_editor', (text, documentName) => {
-    const document = findDocument(documentName);
+  socket.on('text_editor', async ({text, documentName}) => {
+    const update =  await updateDocument(documentName, text);
 
-    if(document) {
-      document.text = text;
+    if(update.modifiedCount) {
       socket.to(documentName).emit('text_editor_clients', text);
+    }
+  });
+
+
+  socket.on('get_documents', async (returnDocuments) => {
+    const documents = await getDocuments();
+
+    returnDocuments(documents);
+  });
+
+  socket.on('add_document', async (documentName) => {
+    const documentExists = (await findDocument(documentName)) != null;
+
+    if(documentExists){
+      socket.emit('document_exist', documentName)
+    } else {
+      const result = await addDocument(documentName);
+  
+      if(result.acknowledged){
+        io.emit('add_document_interface', documentName);
+      }
+    }
+  });
+
+  socket.on('delete_document', async (documentName) => {
+    const result = await deleteDocument(documentName);
+
+    if(result.deletedCount){
+      io.emit("deleted_document_sucess", documentName);
     }
   });
 
@@ -44,10 +58,4 @@ io.on("connection", (socket) => {
 
 });
 
-function findDocument(name){
-  const document = documents.find((document) => {
-    return document.name === name;
-  });
 
-  return document;
-}
