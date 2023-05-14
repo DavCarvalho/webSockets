@@ -2,8 +2,8 @@ import { findUser, registerUser } from "../db/usersDb.js";
 
 
 function registerEventsRegister (socket, io) {
-    socket.on('register-user', async (data) => {
-      const user = await findUser(data.user);
+    socket.on('register_user', async (data) => {
+      const user = await findUser(data.username);
 
       if(user === null) {
         const result = await registerUser(data);

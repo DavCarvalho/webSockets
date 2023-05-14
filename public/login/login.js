@@ -1,7 +1,7 @@
-import { emitRegisterUser } from "./socket-front-register.js";
+import { emitAuthenticateUser } from "./socket-front-login.js";
 
 
-const form = document.getElementById('form-register');
+const form = document.getElementById('form-login');
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -9,5 +9,5 @@ form.addEventListener('submit', (event) => {
   const username = form['input-user'].value;
   const password = form['input-password'].value;
 
-  emitRegisterUser({username, password});
+  emitAuthenticateUser({username, password});
 });

@@ -2,18 +2,18 @@ import createHashAndSalt from "../utils/createHashAndSalt.js";
 import { collectionsUsers } from "./dbConnect.js";
 
 
-function registerUser({user, password}) {
+function registerUser({username, password}) {
   const { hashPassword, salt } = createHashAndSalt(password);
 
   return collectionsUsers.insertOne({
-    user,
+    username,
     hashPassword,
     salt
   });
 }
 
-function findUser(user) {
-  return collectionsUsers.findOne({ user });
+function findUser(username) {
+  return collectionsUsers.findOne({ username });
 }
 
 export { registerUser, findUser };
