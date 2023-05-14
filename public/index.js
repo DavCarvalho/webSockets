@@ -14,7 +14,7 @@ form.addEventListener('submit', (event) => {
 function insertLinkDocument(documentName){
   listDocuments.innerHTML += `
     <a
-      href="document.html?name=${documentName}"
+      href="/document/document.html?name=${documentName}"
       class="list-group-item list-group-item-action"
       id="document-${documentName}"
     >
@@ -29,4 +29,4 @@ function removeLinkDocument(documentName){
   listDocuments.removeChild(document);
 }
 
-export { insertLinkDocument } 
+export { insertLinkDocument, removeLinkDocument } 

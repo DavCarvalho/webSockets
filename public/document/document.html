@@ -18,10 +18,23 @@
   </header>
 
   <main class="w-75 mx-auto">
-    <textarea id="text-editor" class="form-control mb-4" style="height: 400px; resize: none;"></textarea>
+    <div class="row mb-3">
+      <div class="col-sm-8 col-md-9">
+        <textarea id="text-editor" class="form-control mb-4" style="height: 400px; resize: none;"></textarea>
+      </div>
+
+      <div class="col-sm-4 col-md-3">
+        <h2 class="fs-5 fw-normal mb-3">Connected Users:</h2>
+
+        <ul class="list-group" id="connected-users">
+          <li class="list-group-item">User 1</li>
+          <li class="list-group-item">User 2</li>
+        </ul>
+      </div>
+    </div>
 
     <div class="d-flex justify-content-between">
-      <a href="index.html" class="btn btn-primary">Back</a>
+      <a href="../index.html" class="btn btn-primary">Back</a>
       <button id="delete-document" class="btn btn-outline-danger">Delete document</button>
     </div>
   </main>
