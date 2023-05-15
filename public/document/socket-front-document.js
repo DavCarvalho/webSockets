@@ -1,6 +1,15 @@
+import { getCookie } from "../utils/cookies.js";
 import { alertAndRedirect, updateTextEditor } from "./document.js";
-const socket = io();
+const socket = io('/users', {
+  auth: {
+    token: getCookie("tokenJwt"),
+  }
+});
 
+socket.on("connect_error", (erro) => {
+  alert(erro);
+  window.location.href = '/login/login.html';
+});
 
 function selectDocument(documentName) {
   socket.emit('select_document', documentName, (text) => {
