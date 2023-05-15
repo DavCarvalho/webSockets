@@ -22,6 +22,11 @@ function selectDocument(dataEntry) {
 
 socket.on('users_in_document', updateInterface);
 
+socket.on('user_already_in_document', () => {
+  alert(' Document already open in other page');
+  window.location.href = "/";
+})
+
 function emitTextEditor(data) {
   socket.emit('text_editor', data);
 }
