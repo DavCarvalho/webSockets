@@ -1,21 +1,26 @@
 import { getCookie } from "../utils/cookies.js";
-import { alertAndRedirect, updateTextEditor } from "./document.js";
+import { alertAndRedirect, treatAuthorizationSuccess, updateInterface, updateTextEditor } from "./document.js";
+
 const socket = io('/users', {
   auth: {
     token: getCookie("tokenJwt"),
   }
 });
 
+socket.on('authorization_good', treatAuthorizationSuccess);
+
 socket.on("connect_error", (erro) => {
   alert(erro);
   window.location.href = '/login/login.html';
 });
 
-function selectDocument(documentName) {
-  socket.emit('select_document', documentName, (text) => {
+function selectDocument(dataEntry) {
+  socket.emit('select_document', dataEntry, (text) => {
     updateTextEditor(text);
   });
 }
+
+socket.on('users_in_document', updateInterface);
 
 function emitTextEditor(data) {
   socket.emit('text_editor', data);

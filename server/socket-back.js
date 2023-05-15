@@ -11,8 +11,8 @@ const nspUsers = io.of('/users');
 nspUsers.use(authorizeUser);
 
 nspUsers.on('connection', (socket) => {
-  registerEventsIndex(socket,io);
-  registerEventsDocument(socket, io);
+  registerEventsIndex(socket, nspUsers);
+  registerEventsDocument(socket, nspUsers);
 
 });
 
